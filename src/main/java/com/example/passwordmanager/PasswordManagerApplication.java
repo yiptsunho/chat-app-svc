@@ -10,8 +10,4 @@ public class PasswordManagerApplication {
 		SpringApplication.run(PasswordManagerApplication.class, args);
 	}
 
-	public String helloWorld(String[] args) {
-		return "Hello World";
-	}
-
 }
