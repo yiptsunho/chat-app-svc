@@ -6,9 +6,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table
+@Component
 public class User {
     @Id
     @SequenceGenerator(
@@ -24,6 +26,9 @@ public class User {
     private String userName;
     private String password;
     private String displayName;
+
+    public User() {
+    }
 
     public User(String userName, String password, String displayName) {
         this.userName = userName;

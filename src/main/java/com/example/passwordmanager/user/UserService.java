@@ -12,15 +12,15 @@ public class UserService {
     }
 
     public boolean login(User user) {
-        return userRepository.existsByUserId(user.getUserName());
+        return userRepository.existsByUserName(user.getUserName());
     }
 
     public String createNewUser(User user) {
-        return "userId: " + user.getUserName() + " password: " + user.getPassword();
+        return "userName: " + user.getUserName() + " password: " + user.getPassword();
     }
 
     public String editUser(User user) {
-        return "userId: " + user.getUserName() + " password: " + user.getPassword();
+        return "userName: " + user.getUserName() + " password: " + user.getPassword();
     }
 
 }
