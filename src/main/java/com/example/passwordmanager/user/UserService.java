@@ -11,16 +11,31 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean login(User user) {
-        return userRepository.existsByUserName(user.getUserName());
+    public String login(User user) {
+        boolean exists = userRepository.existsByLoginId(user.getLoginId());
+        if (!exists) {
+            throw new IllegalStateException("User does not exist in the system");
+        }
+        return "Login successful";
     }
 
     public String createNewUser(User user) {
-        return "userName: " + user.getUserName() + " password: " + user.getPassword();
+        boolean exists = userRepository.existsByLoginId(user.getLoginId());
+        if (exists) {
+            throw new IllegalStateException("This email address has been registered");
+        }
+        userRepository.save(user);
+        return "success";
+//        return "userName: " + user.getUserName() + " password: " + user.getPassword();
     }
 
     public String editUser(User user) {
-        return "userName: " + user.getUserName() + " password: " + user.getPassword();
+        boolean exists = userRepository.existsByLoginId(user.getLoginId());
+        if (exists) {
+            throw new IllegalStateException("User does not exist in the system");
+        }
+        userRepository.save(user);
+        return "userName: " + user.getLoginId() + " password: " + user.getPassword();
     }
 
 }

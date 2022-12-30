@@ -26,13 +26,13 @@ public class UserController {
     }
 
     @PostMapping("/api/login")
-    public boolean login(@RequestBody User user) {
+    public String login(@RequestBody User user) {
         return userService.login(user);
     }
 
     @PostMapping("/api/createNewUser")
-    public String createNewUser(@RequestBody User user) {
-        return userService.createNewUser(user);
+    public void createNewUser(@RequestBody User user) {
+        userService.createNewUser(user);
     }
 
     @PostMapping("/api/editUser")

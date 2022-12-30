@@ -28,4 +28,18 @@ public class PasswordProfileController {
         return passwordProfileService.createNewPassword(passwordProfile);
     }
 
+    @PostMapping("/api/editPassword")
+    private String editPassword (@RequestBody PasswordProfile passwordProfile) {
+        return passwordProfileService.editPassword(passwordProfile);
+    }
+
+    @DeleteMapping("/api/deletePassword")
+    private String deletePassword (@RequestParam Long id) {
+        return passwordProfileService.deletePassword(id);
+    }
+//    @GetMapping("/api/generatePassword")
+//    private String generatePassword() {
+//        return passwordProfileService.generatePassword();
+//    }
+
 }

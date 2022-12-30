@@ -1,11 +1,7 @@
 package com.example.passwordmanager.passwordProfile;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import com.example.passwordmanager.user.User;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 @Entity
@@ -19,21 +15,31 @@ public class PasswordProfile {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "password_profile_sequence"
     )
     private Long id;
+    private String category;
     private String appName;
     private String loginId;
     private String password;
     private Long version;
+    private Long userId;
 //    private LocalDate lastUpdateTime;
 
-    public PasswordProfile(String appName, String loginId, String password, Long version) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    private User user;
+
+
+    public PasswordProfile(Long id, String category, String appName, String loginId, String password, Long version, Long userId) {
+        this.id = id;
+        this.category = category;
         this.appName = appName;
         this.loginId = loginId;
         this.password = password;
         this.version = version;
+        this.userId = userId;
     }
 
     public PasswordProfile() {
@@ -71,7 +77,31 @@ public class PasswordProfile {
         this.version = version;
     }
 
-//    public LocalDate getLastUpdateTime() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    //    public LocalDate getLastUpdateTime() {
 //        return lastUpdateTime;
 //    }
 //

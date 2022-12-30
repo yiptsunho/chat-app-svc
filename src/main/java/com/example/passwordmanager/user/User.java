@@ -19,29 +19,29 @@ public class User {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "user_sequence"
     )
     private Long id;
-    private String userName;
+    private String loginId;
     private String password;
     private String displayName;
 
     public User() {
     }
 
-    public User(String userName, String password, String displayName) {
-        this.userName = userName;
+    public User(String loginId, String password, String displayName) {
+        this.loginId = loginId;
         this.password = password;
         this.displayName = displayName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getLoginId() {
+        return loginId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
     }
 
     public String getPassword() {
