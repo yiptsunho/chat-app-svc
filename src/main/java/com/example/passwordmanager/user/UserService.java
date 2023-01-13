@@ -14,7 +14,12 @@ public class UserService {
     public String login(User user) {
         boolean exists = userRepository.existsByLoginId(user.getLoginId());
         if (!exists) {
-            throw new IllegalStateException("User does not exist in the system");
+            throw new IllegalStateException("email address or password incorrect");
+        }
+        String password = userRepository.findByLoginId(user.getLoginId()).getPassword();
+        boolean correct = password.equals(user.getPassword());
+        if (!correct) {
+            throw new IllegalStateException("email address or password incorrect");
         }
         return "Login successful";
     }

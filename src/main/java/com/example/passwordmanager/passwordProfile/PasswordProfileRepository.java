@@ -11,5 +11,5 @@ public interface PasswordProfileRepository extends JpaRepository<PasswordProfile
 
     List<PasswordProfile> findAllByUserId(String userId);
 
-    void delete(Optional<PasswordProfile> passwordToDelete);
+//    void delete(Optional<PasswordProfile> passwordToDelete);
 }

@@ -43,15 +43,15 @@ public class PasswordProfileService {
                 " version is " + passwordProfile.getVersion();
     }
 
-    public String deletePassword(Long id) {
-        boolean exists = passwordProfileRepository.existsById(id);
-        if (!exists) {
-            throw new IllegalStateException("Invalid password profile id");
-        }
-        Optional<PasswordProfile> passwordToDelete = passwordProfileRepository.findById(id);
-        passwordProfileRepository.delete(passwordToDelete);
-        return "Password deleted";
-    }
+//    public String deletePassword(Long id) {
+//        boolean exists = passwordProfileRepository.existsById(id);
+//        if (!exists) {
+//            throw new IllegalStateException("Invalid password profile id");
+//        }
+//        Optional<PasswordProfile> passwordToDelete = passwordProfileRepository.findById(id);
+//        passwordProfileRepository.delete(passwordToDelete);
+//        return "Password deleted";
+//    }
 
 //    public String generatePassword() {
 //        return "success";
