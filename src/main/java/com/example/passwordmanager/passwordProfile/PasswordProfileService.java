@@ -1,8 +1,11 @@
 package com.example.passwordmanager.passwordProfile;
 
+import com.example.passwordmanager.user.User;
 import com.example.passwordmanager.user.UserRepository;
+import org.hibernate.internal.util.MutableBoolean;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,12 +24,25 @@ public class PasswordProfileService {
         return passwordProfileRepository.findAllByUserId(userId);
     }
 
-    public String createNewPassword (PasswordProfile passwordProfile) {
-        passwordProfileRepository.save(passwordProfile);
-        return "appName is " + passwordProfile.getAppName() +
-                " loginId is " + passwordProfile.getLoginId() +
-                " password is " + passwordProfile.getPassword() +
-                " version is " + passwordProfile.getVersion();
+    public String createNewPassword (PasswordProfile newPasswordProfile) {
+        // TODO: search by appName and userId
+        ArrayList<PasswordProfile> passwordsOfSameApplication = passwordProfileRepository.findAllByAppNameAndUserId(newPasswordProfile.getAppName(), newPasswordProfile.getUserId());
+        MutableBoolean duplicate = new MutableBoolean(false);
+        
+        for (PasswordProfile existingPassword: passwordsOfSameApplication) {
+            if (existingPassword.getLoginId().equals(newPasswordProfile.getLoginId())) {
+                duplicate.setValue(true);
+                break;
+            }
+        }
+        if (duplicate.getValue() == true) {
+            throw new IllegalStateException("Cannot save passwords with duplicate loginId in the same application");
+        }
+        if (newPasswordProfile.getVersion() == null) {
+            newPasswordProfile.setVersion(1L);
+        }
+        passwordProfileRepository.save(newPasswordProfile);
+        return "Password created successfully";
     }
 
     public String editPassword (PasswordProfile passwordProfile) {
@@ -43,17 +59,16 @@ public class PasswordProfileService {
                 " version is " + passwordProfile.getVersion();
     }
 
-//    public String deletePassword(Long id) {
-//        boolean exists = passwordProfileRepository.existsById(id);
-//        if (!exists) {
-//            throw new IllegalStateException("Invalid password profile id");
-//        }
-//        Optional<PasswordProfile> passwordToDelete = passwordProfileRepository.findById(id);
-//        passwordProfileRepository.delete(passwordToDelete);
-//        return "Password deleted";
-//    }
+    public String deletePassword(Long id) {
+        boolean exists = passwordProfileRepository.existsById(id);
+        if (!exists) {
+            throw new IllegalStateException("Invalid password profile id");
+        }
+        passwordProfileRepository.deleteById(id);
+        return "Password deleted";
+    }
 
-//    public String generatePassword() {
-//        return "success";
-//    }
+    public String generatePassword() {
+        return "success";
+    }
 }

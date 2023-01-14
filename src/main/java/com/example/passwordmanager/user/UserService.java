@@ -11,7 +11,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String login(User user) {
+    public User login(User user) {
         boolean exists = userRepository.existsByLoginId(user.getLoginId());
         if (!exists) {
             throw new IllegalStateException("email address or password incorrect");
@@ -21,7 +21,10 @@ public class UserService {
         if (!correct) {
             throw new IllegalStateException("email address or password incorrect");
         }
-        return "Login successful";
+        User response = userRepository.findByLoginId(user.getLoginId());
+        response.setLoginId(null);
+        response.setPassword(null);
+        return response;
     }
 
     public String createNewUser(User user) {
