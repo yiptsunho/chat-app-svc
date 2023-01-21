@@ -28,7 +28,7 @@ public class PasswordProfileController {
         return passwordProfileService.createNewPassword(passwordProfile);
     }
 
-    @PostMapping("/api/editPassword")
+    @PutMapping("/api/editPassword")
     private String editPassword (@RequestBody PasswordProfile passwordProfile) {
         return passwordProfileService.editPassword(passwordProfile);
     }
