@@ -1,7 +1,8 @@
-package com.example.passwordmanager.passwordProfile;
+package com.example.passwordmanager.service;
 
-import com.example.passwordmanager.user.User;
-import com.example.passwordmanager.user.UserRepository;
+import com.example.passwordmanager.model.PasswordProfile;
+import com.example.passwordmanager.repository.PasswordProfileRepository;
+import com.example.passwordmanager.repository.UserRepository;
 import org.hibernate.internal.util.MutableBoolean;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,9 @@ import java.util.Optional;
 public class PasswordProfileService {
 
     private final PasswordProfileRepository passwordProfileRepository;
-    private final UserRepository userRepository;
 
-    public PasswordProfileService(PasswordProfileRepository passwordProfileRepository, UserRepository userRepository) {
+    public PasswordProfileService(PasswordProfileRepository passwordProfileRepository) {
         this.passwordProfileRepository = passwordProfileRepository;
-        this.userRepository = userRepository;
     }
 
     public List<PasswordProfile> getAllPasswords(String userId) {
@@ -25,7 +24,6 @@ public class PasswordProfileService {
     }
 
     public String createNewPassword (PasswordProfile newPasswordProfile) {
-        // TODO: search by appName and userId
         ArrayList<PasswordProfile> passwordsOfSameApplication = passwordProfileRepository.findAllByAppNameAndUserId(newPasswordProfile.getAppName(), newPasswordProfile.getUserId());
         MutableBoolean duplicate = new MutableBoolean(false);
         

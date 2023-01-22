@@ -1,11 +1,14 @@
-package com.example.passwordmanager.passwordProfile;
+package com.example.passwordmanager.controller;
 
+import com.example.passwordmanager.model.PasswordProfile;
+import com.example.passwordmanager.service.PasswordProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/passwordProfile")
 public class PasswordProfileController {
 
     private PasswordProfile passwordProfile;
@@ -18,28 +21,23 @@ public class PasswordProfileController {
         this.passwordProfileService = passwordProfileService;
     }
 
-    @GetMapping("/api/getAllPasswords")
+    @GetMapping()
     private List<PasswordProfile> getAllPasswords(@RequestParam String userId) {
         return passwordProfileService.getAllPasswords(userId);
     }
 
-    @PostMapping("/api/createNewPassword")
+    @PostMapping()
     private String createNewPassword (@RequestBody PasswordProfile passwordProfile) {
         return passwordProfileService.createNewPassword(passwordProfile);
     }
 
-    @PutMapping("/api/editPassword")
+    @PutMapping()
     private String editPassword (@RequestBody PasswordProfile passwordProfile) {
         return passwordProfileService.editPassword(passwordProfile);
     }
 
-    @DeleteMapping("/api/deletePassword")
+    @DeleteMapping()
     private String deletePassword (@RequestParam Long id) {
         return passwordProfileService.deletePassword(id);
     }
-    @GetMapping("/api/generatePassword")
-    private String generatePassword() {
-        return passwordProfileService.generatePassword();
-    }
-
 }

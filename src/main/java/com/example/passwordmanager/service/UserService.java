@@ -1,5 +1,7 @@
-package com.example.passwordmanager.user;
+package com.example.passwordmanager.service;
 
+import com.example.passwordmanager.model.User;
+import com.example.passwordmanager.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,15 +18,16 @@ public class UserService {
         if (!exists) {
             throw new IllegalStateException("email address or password incorrect");
         }
-        String password = userRepository.findByLoginId(user.getLoginId()).getPassword();
+        User targetUser = userRepository.findByLoginId(user.getLoginId());
+        String password = targetUser.getPassword();
         boolean correct = password.equals(user.getPassword());
         if (!correct) {
             throw new IllegalStateException("email address or password incorrect");
         }
-        User response = userRepository.findByLoginId(user.getLoginId());
-        response.setLoginId(null);
-        response.setPassword(null);
-        return response;
+
+        targetUser.setLoginId(null);
+        targetUser.setPassword(null);
+        return targetUser;
     }
 
     public String createNewUser(User user) {

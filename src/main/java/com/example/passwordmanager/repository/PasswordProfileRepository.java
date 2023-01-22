@@ -1,11 +1,11 @@
-package com.example.passwordmanager.passwordProfile;
+package com.example.passwordmanager.repository;
 
+import com.example.passwordmanager.model.PasswordProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface PasswordProfileRepository extends JpaRepository<PasswordProfile, Long> {

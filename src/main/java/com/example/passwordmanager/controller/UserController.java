@@ -1,12 +1,12 @@
-package com.example.passwordmanager.user;
+package com.example.passwordmanager.controller;
 
+import com.example.passwordmanager.model.User;
+import com.example.passwordmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private User user;
@@ -20,22 +20,22 @@ public class UserController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping()
     public String getGreeting() {
         return "Welcome to password manager";
     }
 
-    @PostMapping("/api/login")
+    @PostMapping("/login")
     public User login(@RequestBody User user) {
         return userService.login(user);
     }
 
-    @PostMapping("/api/createNewUser")
+    @PostMapping()
     public void createNewUser(@RequestBody User user) {
         userService.createNewUser(user);
     }
 
-    @PostMapping("/api/editUser")
+    @PutMapping()
     public String editUser(@RequestBody User user) {
         return userService.editUser(user);
     }
