@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    private User user;
-
     private UserService userService;
 
     @Autowired
-    private void UserController(User user, UserService userService) {
-        this.user = user;
+    private void UserController(UserService userService) {
         this.userService = userService;
     }
 

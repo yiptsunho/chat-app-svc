@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Table
-@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -11,13 +11,10 @@ import java.util.List;
 @RequestMapping("/api/v1/passwordProfile")
 public class PasswordProfileController {
 
-    private PasswordProfile passwordProfile;
-
     private PasswordProfileService passwordProfileService;
 
     @Autowired
-    private void PasswordController(PasswordProfile passwordProfile, PasswordProfileService passwordProfileService) {
-        this.passwordProfile = passwordProfile;
+    private void PasswordController(PasswordProfileService passwordProfileService) {
         this.passwordProfileService = passwordProfileService;
     }
 
