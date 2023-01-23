@@ -3,6 +3,8 @@ package com.example.passwordmanager.service;
 import com.example.passwordmanager.model.PasswordProfile;
 import com.example.passwordmanager.repository.PasswordProfileRepository;
 import com.example.passwordmanager.repository.UserRepository;
+import com.example.passwordmanager.response.AuthenticationResponse;
+import com.example.passwordmanager.response.PasswordResponse;
 import org.hibernate.internal.util.MutableBoolean;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,10 @@ public class PasswordProfileService {
         this.passwordProfileRepository = passwordProfileRepository;
     }
 
+    // TODO: return passwordProfile response
     public List<PasswordProfile> getAllPasswords(String userId) {
-        return passwordProfileRepository.findAllByUserId(userId);
+        List<PasswordProfile> passwordProfileList = passwordProfileRepository.findAllByUserId(userId);
+        return passwordProfileList;
     }
 
     public String createNewPassword (PasswordProfile newPasswordProfile) {

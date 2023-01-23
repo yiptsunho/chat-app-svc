@@ -1,6 +1,7 @@
 package com.example.passwordmanager.controller;
 
 import com.example.passwordmanager.model.PasswordProfile;
+import com.example.passwordmanager.response.PasswordResponse;
 import com.example.passwordmanager.service.PasswordProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
