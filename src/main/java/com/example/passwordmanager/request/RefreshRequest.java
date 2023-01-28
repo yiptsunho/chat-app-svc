@@ -1,4 +1,4 @@
-package com.example.passwordmanager.response;
+package com.example.passwordmanager.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
+public class RefreshRequest {
 
-    private String accessToken;
     private String refreshToken;
-    private Long userId;
-    private String displayName;
-
+    private String loginId;
+    String password;
 }

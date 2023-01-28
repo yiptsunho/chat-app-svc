@@ -1,10 +1,12 @@
 package com.example.passwordmanager.controller;
 
 import com.example.passwordmanager.request.AuthenticationRequest;
+import com.example.passwordmanager.request.RefreshRequest;
 import com.example.passwordmanager.request.RegisterRequest;
 import com.example.passwordmanager.response.AuthenticationResponse;
+import com.example.passwordmanager.response.RefreshResponse;
 import com.example.passwordmanager.service.AuthenticationService;
-import com.example.passwordmanager.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,13 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshResponse> register(
+            @RequestBody RefreshRequest request
+    ) {
+        return ResponseEntity.ok(authenticationService.refresh(request));
     }
 
 }

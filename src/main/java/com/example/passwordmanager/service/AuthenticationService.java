@@ -1,12 +1,15 @@
 package com.example.passwordmanager.service;
 
-import com.example.passwordmanager.model.PasswordProfile;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repository.UserRepository;
 import com.example.passwordmanager.request.AuthenticationRequest;
+import com.example.passwordmanager.request.RefreshRequest;
 import com.example.passwordmanager.request.RegisterRequest;
 import com.example.passwordmanager.response.AuthenticationResponse;
+import com.example.passwordmanager.response.RefreshResponse;
+import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,9 +39,11 @@ public class AuthenticationService {
             throw new IllegalStateException("User already exist in the system");
         }
         userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var accessToken = jwtService.generateAccessToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .userId(user.getId())
                 .displayName(user.getDisplayName())
                 .build();
@@ -53,11 +58,33 @@ public class AuthenticationService {
         );
         var user = userRepository.findByLoginId(request.getLoginId())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        var jwtToken = jwtService.generateToken(user);
+        var accessToken = jwtService.generateAccessToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .userId(user.getId())
                 .displayName(user.getDisplayName())
+                .build();
+    }
+    // TODO: should not include loginId and password in the payload, BE shd find the user in the token header
+    public RefreshResponse refresh(RefreshRequest request) {
+//        String authorizationHeader = request.getHeader("AUTHORIZATION");
+//        String token = authorizationHeader.substring("Bearer ".length());
+//        Algorithm
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getLoginId(),
+                        request.getPassword()
+                )
+        );
+        var user = userRepository.findByLoginId(request.getLoginId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        var accessToken = jwtService.generateAccessToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+        return RefreshResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 }
