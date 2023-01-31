@@ -68,17 +68,22 @@ public class AuthenticationService {
                 .build();
     }
     // TODO: should not include loginId and password in the payload, BE shd find the user in the token header
-    public RefreshResponse refresh(RefreshRequest request) {
+    public RefreshResponse refresh(HttpServletRequest request) {
 //        String authorizationHeader = request.getHeader("AUTHORIZATION");
 //        String token = authorizationHeader.substring("Bearer ".length());
 //        Algorithm
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getLoginId(),
-                        request.getPassword()
-                )
-        );
-        var user = userRepository.findByLoginId(request.getLoginId())
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getLoginId(),
+//                        request.getPassword()
+//                )
+//        );
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        final String loginId;
+        jwt = authHeader.substring(7);
+        loginId = jwtService.extractLoginId(jwt);
+        var user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         var accessToken = jwtService.generateAccessToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
