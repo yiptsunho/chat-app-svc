@@ -4,7 +4,6 @@ import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repository.UserRepository;
 import com.example.passwordmanager.request.AuthenticationRequest;
-import com.example.passwordmanager.request.RefreshRequest;
 import com.example.passwordmanager.request.RegisterRequest;
 import com.example.passwordmanager.response.AuthenticationResponse;
 import com.example.passwordmanager.response.RefreshResponse;
@@ -28,16 +27,16 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse register(RegisterRequest request) {
+        boolean exists = userRepository.existsByLoginId(request.getLoginId());
+        if (exists) {
+            throw new IllegalStateException("User already exist in the system");
+        }
         var user = User.builder()
                 .loginId(request.getLoginId())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .displayName(request.getDisplayName())
                 .role(Role.USER)
                 .build();
-        boolean exists = userRepository.existsByLoginId(user.getLoginId());
-        if (exists) {
-            throw new IllegalStateException("User already exist in the system");
-        }
         userRepository.save(user);
         var accessToken = jwtService.generateAccessToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
