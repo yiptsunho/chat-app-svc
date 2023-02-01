@@ -16,6 +16,7 @@ import java.util.Optional;
 public class PasswordProfileService {
 
     private final PasswordProfileRepository passwordProfileRepository;
+    private static final String SECRET_KEY = "367639792442264528482B4D6251655468576D5A7134743777217A25432A462D";
 
     public PasswordProfileService(PasswordProfileRepository passwordProfileRepository) {
         this.passwordProfileRepository = passwordProfileRepository;
@@ -24,7 +25,20 @@ public class PasswordProfileService {
     // TODO: return passwordProfile response
     public List<PasswordProfile> getAllPasswords(String userId) {
         List<PasswordProfile> passwordProfileList = passwordProfileRepository.findAllByUserId(userId);
-        return passwordProfileList;
+        List<PasswordProfile> decodedPasswordProfileList = new ArrayList<>();
+        for (PasswordProfile passwordProfile: passwordProfileList) {
+            PasswordProfile decodedPasswordProfile = PasswordProfile.builder()
+                    .id(passwordProfile.getId())
+                    .category(passwordProfile.getCategory())
+                    .appName(passwordProfile.getAppName())
+                    .loginId(passwordProfile.getLoginId())
+                    .password(AES.decrypt(passwordProfile.getPassword(), SECRET_KEY))
+                    .version(passwordProfile.getVersion())
+                    .userId(passwordProfile.getUserId())
+                    .build();
+            decodedPasswordProfileList.add(decodedPasswordProfile);
+        }
+        return decodedPasswordProfileList;
     }
 
     public String createNewPassword (PasswordProfile newPasswordProfile) {
@@ -40,10 +54,15 @@ public class PasswordProfileService {
         if (duplicate.getValue() == true) {
             throw new IllegalStateException("Cannot save passwords with duplicate loginId in the same application");
         }
-        if (newPasswordProfile.getVersion() == null) {
-            newPasswordProfile.setVersion(1L);
-        }
-        passwordProfileRepository.save(newPasswordProfile);
+        PasswordProfile passwordProfileToBeCreated = PasswordProfile.builder()
+                .category(newPasswordProfile.getCategory())
+                .appName(newPasswordProfile.getAppName())
+                .loginId(newPasswordProfile.getLoginId())
+                .password(AES.encrypt(newPasswordProfile.getPassword(), SECRET_KEY))
+                .version(newPasswordProfile.getVersion() != null ? newPasswordProfile.getVersion() : 1L)
+                .userId(newPasswordProfile.getUserId())
+                .build();
+        passwordProfileRepository.save(passwordProfileToBeCreated);
         return "Password created successfully";
     }
 
